@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MM Shoot">
+<meta name="theme-color" content="#0d0d0d">
+<title>Mizzi Media — Shoot Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --s1: #161616;
+  --s2: #1f1f1f;
+  --s3: #2a2a2a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f2f2f2;
+  --text2: #888;
+  --text3: #484848;
+  --gold: #c9a84c;
+  --gold-dim: rgba(201,168,76,0.1);
+  --green: #3dba6f;
+  --green-dim: rgba(61,186,111,0.1);
+  --red: #e05555;
+  --red-dim: rgba(224,85,85,0.1);
+  --blue: #5a9cf5;
+  --blue-dim: rgba(90,156,245,0.1);
+  --orange: #e8894a;
+  --r: 12px;
+  --r-sm: 8px;
+  --font-head: 'Syne', sans-serif;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;padding-bottom:calc(72px + var(--safe-bot))}
+
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(13,13,13,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid var(--border2);display:flex;padding:6px 0 calc(6px + var(--safe-bot));z-index:100}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer}
+.ni svg{transition:all 0.2s}
+.nl{font-size:10px;font-weight:500;color:var(--text3);letter-spacing:0.03em;transition:color 0.2s}
+.ni.active .nl{color:var(--gold)}
+.ni.active svg{stroke:var(--gold) !important}
+
+/* ── PAGES ── */
+.page{display:none;padding:calc(var(--safe-top) + 20px) 16px 16px}
+.page.active{display:block}
+
+/* ── HEADER ── */
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.brand-logo{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold)}
+.brand-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0.5}
+.page-title{font-family:var(--font-head);font-size:28px;font-weight:700;letter-spacing:-0.5px;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text2)}
+
+/* ── CARDS ── */
+.card{background:var(--s1);border:0.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card-sm{background:var(--s1);border:0.5px solid var(--border);border-radius:var(--r-sm);padding:12px 14px}
+
+/* ── INPUTS ── */
+input,select,textarea{width:100%;background:var(--s2);border:0.5px solid var(--border2);border-radius:var(--r-sm);padding:11px 13px;font-size:15px;font-family:var(--font);color:var(--text);outline:none;transition:border-color 0.15s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+select option{background:var(--s2)}
+textarea{resize:none;line-height:1.5}
+.lbl{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:5px}
+.field{margin-bottom:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:13px;border-radius:var(--r-sm);font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;border:none;transition:all 0.15s;letter-spacing:0.01em}
+.btn:active{transform:scale(0.98);opacity:0.88}
+.btn-gold{background:var(--gold);color:#0d0d0d}
+.btn-ghost{background:transparent;color:var(--text2);border:0.5px solid var(--border2)}
+.btn-red{background:var(--red-dim);color:var(--red);border:0.5px solid rgba(224,85,85,0.2)}
+.btn-sm{padding:8px 14px;font-size:13px;width:auto;border-radius:7px}
+.btn-icon{width:32px;height:32px;border-radius:8px;background:var(--s2);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background 0.15s}
+.btn-icon:active{background:var(--s3)}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.b-gold{background:var(--gold-dim);color:var(--gold)}
+.b-green{background:var(--green-dim);color:var(--green)}
+.b-red{background:var(--red-dim);color:var(--red)}
+.b-blue{background:var(--blue-dim);color:var(--blue)}
+.b-orange{background:rgba(232,137,74,0.1);color:var(--orange)}
+
+/* ── SHOT CHECKLIST ── */
+.shot-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:0.5px solid var(--border);cursor:pointer;transition:opacity 0.15s}
+.shot-item:last-child{border-bottom:none;padding-bottom:0}
+.shot-item:first-child{padding-top:0}
+.shot-check{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.shot-check.done{background:var(--green);border-color:var(--green)}
+.shot-label{font-size:14px;font-weight:500;flex:1;transition:color 0.15s}
+.shot-item.done .shot-label{color:var(--text3);text-decoration:line-through}
+.shot-cat{font-size:11px;color:var(--text3);margin-top:1px}
+.shot-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;letter-spacing:0.03em}
+
+/* ── PROGRESS RING ── */
+.prog-ring-wrap{display:flex;align-items:center;gap:14px;padding:14px;background:var(--s2);border-radius:var(--r-sm);margin-bottom:12px}
+.prog-ring{position:relative;width:52px;height:52px;flex-shrink:0}
+.prog-ring svg{transform:rotate(-90deg)}
+.prog-ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:var(--mono);color:var(--gold)}
+.prog-info-title{font-size:15px;font-weight:600}
+.prog-info-sub{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* ── TIMELINE ── */
+.timeline-item{display:flex;gap:12px;padding-bottom:16px;position:relative}
+.timeline-item:last-child{padding-bottom:0}
+.tl-line{position:absolute;left:11px;top:24px;bottom:0;width:1px;background:var(--border2)}
+.timeline-item:last-child .tl-line{display:none}
+.tl-dot{width:23px;height:23px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;background:var(--s1)}
+.tl-dot.done{background:var(--green-dim);border-color:var(--green)}
+.tl-dot.active{background:var(--gold-dim);border-color:var(--gold)}
+.tl-content{flex:1}
+.tl-time{font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:2px}
+.tl-title{font-size:14px;font-weight:500}
+.tl-note{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.4}
+
+/* ── SHOOT CARD ── */
+.shoot-card{background:var(--s1);border:0.5px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.shoot-card-header{padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;cursor:pointer}
+.shoot-card-body{display:none;border-top:0.5px solid var(--border);padding:14px 16px}
+.shoot-card-body.open{display:block}
+.sc-client{font-family:var(--font-head);font-size:17px;font-weight:700;letter-spacing:-0.2px}
+.sc-addr{font-size:12px;color:var(--text2);margin-top:3px}
+.sc-meta{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+
+/* ── NOTES ── */
+.note-block{background:var(--s2);border-radius:var(--r-sm);padding:12px 14px;margin-top:8px}
+.note-ts{font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:4px}
+.note-text{font-size:13px;line-height:1.5;color:var(--text2)}
+
+/* ── MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--s1);border-radius:var(--r) var(--r) 0 0;padding:18px 18px calc(18px + var(--safe-bot));width:100%;max-width:430px;max-height:88vh;overflow-y:auto;animation:sup 0.22s ease}
+@keyframes sup{from{transform:translateY(22px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhandle{width:34px;height:4px;background:var(--border2);border-radius:99px;margin:0 auto 18px}
+.mtitle{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:16px;letter-spacing:-0.2px}
+
+/* ── ACTIVE SESSION BAR ── */
+.session-bar{background:var(--gold-dim);border:0.5px solid rgba(201,168,76,0.2);border-radius:var(--r-sm);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.session-pulse{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 1.5s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── SECTION TITLE ── */
+.sect{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px}
+.sect:first-child{margin-top:0}
+
+/* ── DIVIDER ── */
+.div{height:0.5px;background:var(--border);margin:12px 0}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:44px 16px;color:var(--text3)}
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty-title{font-size:15px;font-weight:600;color:var(--text2);margin-bottom:4px}
+.empty-sub{font-size:13px;line-height:1.5}
+
+/* ── STAT ROW ── */
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:0.5px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+
+/* ── WEATHER BAR ── */
+.weather-bar{background:var(--s2);border-radius:var(--r-sm);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+
+::-webkit-scrollbar{width:0}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ PAGE: TODAY ═══════════════ -->
+<div id="page-today" class="page active">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span><div class="brand-dot"></div><span style="font-size:11px;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase">Shoot Day</span></div>
+  <div class="page-title" id="today-greeting">Today</div>
+  <div class="page-sub" id="today-date" style="margin-bottom:18px"></div>
+
+  <div id="no-session-area">
+    <div class="empty" style="padding:32px 16px">
+      <div class="empty-icon">📷</div>
+      <div class="empty-title">No active shoot</div>
+      <div class="empty-sub" style="margin-bottom:20px">Start a new shoot session or load a past job.</div>
+      <button class="btn btn-gold" onclick="openNewShoot()">+ New shoot</button>
+    </div>
+    <div class="sect">Recent shoots</div>
+    <div id="recent-shoots"></div>
+  </div>
+
+  <div id="active-session-area" style="display:none">
+    <div class="session-bar">
+      <div style="display:flex;align-items:center;gap:8px"><div class="session-pulse"></div><span style="font-size:13px;font-weight:600;color:var(--gold)" id="session-client-name">Shoot in progress</span></div>
+      <span style="font-size:12px;font-family:var(--mono);color:var(--text2)" id="session-elapsed">0 min</span>
+    </div>
+
+    <div class="prog-ring-wrap">
+      <div class="prog-ring">
+        <svg width="52" height="52" viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="22" fill="none" stroke="#2a2a2a" stroke-width="4"/>
+          <circle id="prog-circle" cx="26" cy="26" r="22" fill="none" stroke="#c9a84c" stroke-width="4" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2"/>
+        </svg>
+        <div class="prog-ring-num" id="prog-pct">0%</div>
+      </div>
+      <div>
+        <div class="prog-info-title" id="prog-title">0 of 0 shots</div>
+        <div class="prog-info-sub" id="prog-addr"></div>
+        <div style="margin-top:6px" id="prog-badges"></div>
+      </div>
+    </div>
+
+    <div class="sect">Shot checklist</div>
+    <div class="card" style="padding:12px 16px" id="shot-list"></div>
+
+    <div class="sect">Timeline</div>
+    <div class="card" style="padding:12px 16px" id="timeline-list"></div>
+
+    <div class="sect">Notes</div>
+    <div id="notes-area"></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <textarea id="note-input" placeholder="Add a note, issue, or instruction for Sanjay/Isaac..." rows="2" style="flex:1"></textarea>
+      <button class="btn-icon" onclick="addNote()" style="align-self:flex-end;margin-bottom:1px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+      <button class="btn btn-ghost" onclick="addCustomShot()">+ Add shot</button>
+      <button class="btn btn-gold" onclick="wrapShoot()">Wrap shoot</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE: JOBS ═══════════════ -->
+<div id="page-jobs" class="page">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span></div>
+  <div class="page-title" style="margin-bottom:4px">Jobs</div>
+  <div class="page-sub" style="margin-bottom:18px">All shoot records</div>
+  <button class="btn btn-gold" onclick="openNewShoot()" style="margin-bottom:18px">+ New shoot</button>
+  <div id="all-jobs-list"></div>
+</div>
+
+<!-- ═══════════════ PAGE: REPORT ═══════════════ -->
+<div id="page-report" class="page">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span></div>
+  <div class="page-title" style="margin-bottom:4px">Shoot report</div>
+  <div class="page-sub" style="margin-bottom:18px">Summary for completed jobs</div>
+  <div id="report-area"><div class="empty"><div class="empty-icon">📋</div><div class="empty-title">No completed shoots</div><div class="empty-sub">Wrap a shoot to generate a report.</div></div></div>
+</div>
+
+<!-- ═══════════════ PAGE: SETTINGS ═══════════════ -->
+<div id="page-settings" class="page">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span></div>
+  <div class="page-title" style="margin-bottom:16px">Settings</div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px">Shooter profile</div>
+    <div class="field"><div class="lbl">Your name</div><input type="text" id="set-shooter" placeholder="Ben Mizzi"></div>
+    <div class="field"><div class="lbl">Business name</div><input type="text" id="set-biz" placeholder="Mizzi Media" value="Mizzi Media"></div>
+    <div class="field"><div class="lbl">Default deliverables note</div><textarea id="set-deliv" rows="2" placeholder="e.g. All footage to Dropbox by EOD"></textarea></div>
+    <button class="btn btn-gold" onclick="saveSettings()">Save</button>
+  </div>
+  <div class="card" style="margin-top:4px">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px">Shot templates</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Default shot types loaded for every new shoot.</div>
+    <div id="shot-templates-list"></div>
+    <button class="btn btn-ghost" onclick="addShotTemplate()" style="margin-top:8px">+ Add shot type</button>
+  </div>
+  <div class="card" style="margin-top:4px">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Data</div>
+    <button class="btn btn-ghost" onclick="exportData()" style="margin-bottom:8px">Export all data (JSON)</button>
+    <button class="btn btn-red" onclick="clearData()">Clear all data</button>
+  </div>
+</div>
+
+<!-- ── BOTTOM NAV ── -->
+<div class="nav">
+  <div class="ni active" onclick="sp('today',this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <div class="nl">Today</div>
+  </div>
+  <div class="ni" onclick="sp('jobs',this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    <div class="nl">Jobs</div>
+  </div>
+  <div class="ni" onclick="sp('report',this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <div class="nl">Reports</div>
+  </div>
+  <div class="ni" onclick="sp('settings',this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+    <div class="nl">Settings</div>
+  </div>
+</div>
+
+<!-- ── MODAL: NEW SHOOT ── -->
+<div class="overlay" id="modal-new-shoot">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">New shoot</div>
+    <div class="field"><div class="lbl">Client name</div><input type="text" id="ns-client" placeholder="e.g. Paterson Property Group"></div>
+    <div class="field"><div class="lbl">Address</div><input type="text" id="ns-addr" placeholder="e.g. 45 Harbour St, Brisbane"></div>
+    <div class="row2" style="margin-bottom:10px">
+      <div class="field"><div class="lbl">Date</div><input type="date" id="ns-date"></div>
+      <div class="field"><div class="lbl">Call time</div><input type="time" id="ns-time"></div>
+    </div>
+    <div class="field"><div class="lbl">Job type</div>
+      <select id="ns-type">
+        <option value="construction">Construction update</option>
+        <option value="listing">Real estate listing</option>
+        <option value="commercial">Commercial / brand</option>
+        <option value="interview">Interview / testimonial</option>
+        <option value="event">Event</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field"><div class="lbl">Deliverables required</div>
+      <div id="deliverables-check" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px"></div>
+    </div>
+    <div class="field"><div class="lbl">Contact on site</div><input type="text" id="ns-contact" placeholder="Name & number"></div>
+    <div class="field"><div class="lbl">Brief / notes</div><textarea id="ns-brief" rows="3" placeholder="Key shots, access instructions, vibe..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+      <button class="btn btn-ghost" onclick="closeOverlay('modal-new-shoot')">Cancel</button>
+      <button class="btn btn-gold" onclick="createShoot()">Start shoot</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: ADD SHOT ── -->
+<div class="overlay" id="modal-add-shot">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle">Add shot</div>
+    <div class="field"><div class="lbl">Shot name</div><input type="text" id="as-name" placeholder="e.g. Hero drone reveal"></div>
+    <div class="field"><div class="lbl">Category</div>
+      <select id="as-cat">
+        <option value="drone">Drone</option>
+        <option value="video">Video</option>
+        <option value="photo">Photo</option>
+        <option value="interview">Interview</option>
+        <option value="bts">BTS</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="field"><div class="lbl">Notes (optional)</div><input type="text" id="as-note" placeholder="Any specifics..."></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+      <button class="btn btn-ghost" onclick="closeOverlay('modal-add-shot')">Cancel</button>
+      <button class="btn btn-gold" onclick="confirmAddShot()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: JOB DETAIL ── -->
+<div class="overlay" id="modal-job-detail">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div id="job-detail-content"></div>
+    <button class="btn btn-ghost" onclick="closeOverlay('modal-job-detail')" style="margin-top:14px">Close</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+var DB = {
+  g: function(k){ try{ return JSON.parse(localStorage.getItem('mm_sd_'+k)||'null'); }catch(e){ return null; } },
+  s: function(k,v){ localStorage.setItem('mm_sd_'+k, JSON.stringify(v)); }
+};
+
+var shoots   = DB.g('shoots')   || [];
+var settings = DB.g('settings') || { shooter:'Ben Mizzi', biz:'Mizzi Media', deliv:'' };
+var shotTemplates = DB.g('shot_templates') || [
+  {name:'Drone hero reveal',cat:'drone'},
+  {name:'Drone site overview',cat:'drone'},
+  {name:'Drone progress flyover',cat:'drone'},
+  {name:'Walkthrough video',cat:'video'},
+  {name:'Site wide video',cat:'video'},
+  {name:'Key detail close-ups',cat:'video'},
+  {name:'Interview / testimonial',cat:'interview'},
+  {name:'Hero stills',cat:'photo'},
+  {name:'Progress stills',cat:'photo'},
+  {name:'Before / after stills',cat:'photo'},
+  {name:'BTS content',cat:'bts'},
+];
+
+var activeShoot = null; // index into shoots[]
+var elapsedTimer = null;
+
+var DELIVERABLES = ['Drone video','Drone photos','Walkthrough video','Stills','Reel','Interview video','BTS content'];
+var CAT_COLORS = { drone:'#5a9cf5', video:'#c9a84c', photo:'#3dba6f', interview:'#e8894a', bts:'#888', other:'#555' };
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function fmtDate(d){ var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]; }
+function fmtTime(d){ return d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+function fmtElapsed(ms){ var m=Math.floor(ms/60000),h=Math.floor(m/60); return h>0?h+'h '+( m%60)+'m':m+'m'; }
+function catColor(cat){ return CAT_COLORS[cat]||'#555'; }
+function catLabel(cat){ return {drone:'Drone',video:'Video',photo:'Photo',interview:'Interview',bts:'BTS',other:'Other'}[cat]||cat; }
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function sp(id, el){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.ni').forEach(function(n){ n.classList.remove('active'); });
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  if(id==='today') renderToday();
+  if(id==='jobs') renderJobs();
+  if(id==='report') renderReports();
+  if(id==='settings') renderSettings();
+}
+
+// ═══════════════════════════════════════════════
+// TODAY PAGE
+// ═══════════════════════════════════════════════
+function renderToday(){
+  var now=new Date();
+  var h=now.getHours();
+  var name=settings.shooter?settings.shooter.split(' ')[0]:'Ben';
+  document.getElementById('today-greeting').textContent=(h<12?'Morning':h<17?'Afternoon':'Evening')+', '+name;
+  document.getElementById('today-date').textContent=fmtDate(now)+' · '+fmtTime(now);
+
+  // Find active shoot (started today, not wrapped)
+  var todayActive=shoots.find(function(s){ return s.status==='active'; });
+  if(todayActive){
+    activeShoot=shoots.indexOf(todayActive);
+    document.getElementById('no-session-area').style.display='none';
+    document.getElementById('active-session-area').style.display='block';
+    renderActiveSession();
+    startElapsedTimer();
+  } else {
+    activeShoot=null;
+    document.getElementById('no-session-area').style.display='block';
+    document.getElementById('active-session-area').style.display='none';
+    stopElapsedTimer();
+    renderRecentShoots();
+  }
+}
+
+function renderRecentShoots(){
+  var el=document.getElementById('recent-shoots');
+  var recent=shoots.filter(function(s){ return s.status==='done'; }).slice(0,3);
+  if(!recent.length){ el.innerHTML='<div style="font-size:13px;color:var(--text3);text-align:center;padding:16px">No past shoots yet.</div>'; return; }
+  el.innerHTML=recent.map(function(s,i){
+    var done=s.shots.filter(function(sh){ return sh.done; }).length;
+    return '<div class="card-sm" style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center" onclick="openJobDetail('+shoots.indexOf(s)+')"><div><div style="font-size:14px;font-weight:600;font-family:var(--font-head)">'+s.client+'</div><div style="font-size:12px;color:var(--text2);margin-top:2px">'+fmtDate(new Date(s.date))+' · '+done+'/'+s.shots.length+' shots</div></div><span class="badge b-green">Done</span></div>';
+  }).join('');
+}
+
+function renderActiveSession(){
+  var s=shoots[activeShoot];
+  if(!s) return;
+  document.getElementById('session-client-name').textContent=s.client;
+  document.getElementById('prog-addr').textContent=s.address||'';
+
+  // Progress
+  var done=s.shots.filter(function(sh){ return sh.done; }).length;
+  var total=s.shots.length;
+  var pct=total?Math.round((done/total)*100):0;
+  var circ=2*Math.PI*22;
+  var offset=circ-(circ*(pct/100));
+  document.getElementById('prog-circle').style.strokeDashoffset=offset;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-title').textContent=done+' of '+total+' shots';
+
+  // Deliverables badges
+  var badges=s.deliverables.map(function(d){ return '<span class="badge b-gold" style="font-size:10px;margin-right:4px;margin-bottom:4px">'+d+'</span>'; }).join('');
+  document.getElementById('prog-badges').innerHTML=badges;
+
+  // Shot list
+  renderShotList();
+
+  // Timeline
+  renderTimeline();
+
+  // Notes
+  renderNotes();
+}
+
+function renderShotList(){
+  var s=shoots[activeShoot];
+  var el=document.getElementById('shot-list');
+  if(!s.shots.length){ el.innerHTML='<div style="font-size:13px;color:var(--text3)">No shots added yet.</div>'; return; }
+  el.innerHTML=s.shots.map(function(sh,i){
+    var color=catColor(sh.cat);
+    return '<div class="shot-item'+(sh.done?' done':'')+'" onclick="toggleShot('+i+')">'
+      +'<div class="shot-check'+(sh.done?' done':'')+'"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
+      +'<div style="flex:1"><div class="shot-label">'+sh.name+'</div>'+(sh.note?'<div class="shot-cat">'+sh.note+'</div>':'')+'</div>'
+      +'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:'+color+'22;color:'+color+'">'+catLabel(sh.cat)+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+function toggleShot(i){
+  var s=shoots[activeShoot];
+  s.shots[i].done=!s.shots[i].done;
+  if(s.shots[i].done) s.shots[i].completedAt=new Date().toISOString();
+  else delete s.shots[i].completedAt;
+  DB.s('shoots',shoots);
+  renderActiveSession();
+}
+
+function renderTimeline(){
+  var s=shoots[activeShoot];
+  var el=document.getElementById('timeline-list');
+  var events=[{time:s.startTime,label:'Shoot started',note:'Arrived on site',status:'done'}];
+  s.shots.filter(function(sh){ return sh.done&&sh.completedAt; }).forEach(function(sh){
+    events.push({time:sh.completedAt,label:sh.name,note:catLabel(sh.cat),status:'done'});
+  });
+  s.notes.forEach(function(n){
+    events.push({time:n.ts,label:'Note added',note:n.text,status:'note'});
+  });
+  events.sort(function(a,b){ return new Date(a.time)-new Date(b.time); });
+  events.push({time:null,label:'Wrap',note:'End of shoot',status:'pending'});
+
+  el.innerHTML=events.map(function(ev,i){
+    var isDone=ev.status==='done';
+    var isPending=ev.status==='pending';
+    return '<div class="timeline-item">'
+      +'<div class="tl-line"></div>'
+      +'<div class="tl-dot'+(isDone?' done':isPending?'':' active')+'">'+(isDone?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3dba6f" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>':'')+'</div>'
+      +'<div class="tl-content">'
+      +(ev.time?'<div class="tl-time">'+fmtTime(new Date(ev.time))+'</div>':'')
+      +'<div class="tl-title">'+ev.label+'</div>'
+      +(ev.note?'<div class="tl-note">'+ev.note+'</div>':'')
+      +'</div></div>';
+  }).join('');
+}
+
+function renderNotes(){
+  var s=shoots[activeShoot];
+  var el=document.getElementById('notes-area');
+  if(!s.notes.length){ el.innerHTML=''; return; }
+  el.innerHTML=s.notes.map(function(n){
+    return '<div class="note-block"><div class="note-ts">'+fmtTime(new Date(n.ts))+'</div><div class="note-text">'+n.text+'</div></div>';
+  }).join('');
+}
+
+function addNote(){
+  var txt=document.getElementById('note-input').value.trim();
+  if(!txt) return;
+  shoots[activeShoot].notes.push({ts:new Date().toISOString(),text:txt});
+  DB.s('shoots',shoots);
+  document.getElementById('note-input').value='';
+  renderActiveSession();
+}
+
+function wrapShoot(){
+  if(!confirm('Mark this shoot as wrapped?')) return;
+  shoots[activeShoot].status='done';
+  shoots[activeShoot].endTime=new Date().toISOString();
+  DB.s('shoots',shoots);
+  activeShoot=null;
+  stopElapsedTimer();
+  renderToday();
+}
+
+function startElapsedTimer(){
+  stopElapsedTimer();
+  elapsedTimer=setInterval(function(){
+    if(activeShoot===null) return;
+    var s=shoots[activeShoot];
+    var ms=Date.now()-new Date(s.startTime).getTime();
+    document.getElementById('session-elapsed').textContent=fmtElapsed(ms);
+  },30000);
+  if(activeShoot!==null){
+    var s=shoots[activeShoot];
+    var ms=Date.now()-new Date(s.startTime).getTime();
+    document.getElementById('session-elapsed').textContent=fmtElapsed(ms);
+  }
+}
+
+function stopElapsedTimer(){ clearInterval(elapsedTimer); }
+
+// ═══════════════════════════════════════════════
+// NEW SHOOT
+// ═══════════════════════════════════════════════
+function openNewShoot(){
+  // Check no active shoot
+  if(shoots.find(function(s){ return s.status==='active'; })){
+    alert('You already have an active shoot. Wrap it first.');
+    return;
+  }
+  // Set today's date
+  var today=new Date();
+  var dd=String(today.getDate()).padStart(2,'0');
+  var mm=String(today.getMonth()+1).padStart(2,'0');
+  document.getElementById('ns-date').value=today.getFullYear()+'-'+mm+'-'+dd;
+  document.getElementById('ns-time').value=String(today.getHours()).padStart(2,'0')+':'+String(today.getMinutes()).padStart(2,'0');
+  // Deliverables checkboxes
+  document.getElementById('deliverables-check').innerHTML=DELIVERABLES.map(function(d){
+    return '<div onclick="toggleDeliv(this)" data-val="'+d+'" style="padding:5px 11px;border-radius:99px;font-size:12px;font-weight:500;background:var(--s2);border:0.5px solid var(--border2);color:var(--text2);cursor:pointer">'+d+'</div>';
+  }).join('');
+  document.getElementById('ns-client').value='';
+  document.getElementById('ns-addr').value='';
+  document.getElementById('ns-contact').value='';
+  document.getElementById('ns-brief').value='';
+  document.getElementById('modal-new-shoot').classList.add('open');
+}
+
+function toggleDeliv(el){
+  var active=el.style.background==='rgb(201, 168, 76)';
+  el.style.background=active?'var(--s2)':'var(--gold)';
+  el.style.color=active?'var(--text2)':'#0d0d0d';
+  el.style.borderColor=active?'var(--border2)':'var(--gold)';
+}
+
+function createShoot(){
+  var client=document.getElementById('ns-client').value.trim();
+  var addr=document.getElementById('ns-addr').value.trim();
+  if(!client){ alert('Please enter a client name'); return; }
+  var delivs=Array.from(document.querySelectorAll('#deliverables-check div')).filter(function(d){ return d.style.background==='rgb(201, 168, 76)'; }).map(function(d){ return d.dataset.val; });
+  var type=document.getElementById('ns-type').value;
+
+  // Build shot list from templates + type
+  var shots=shotTemplates.map(function(t){ return {name:t.name,cat:t.cat,done:false,note:''}; });
+
+  // Add type-specific shots
+  if(type==='listing'){
+    shots.unshift({name:'Front facade hero',cat:'photo',done:false,note:''});
+    shots.unshift({name:'Street approach drone',cat:'drone',done:false,note:''});
+  }
+  if(type==='interview'){
+    shots=[{name:'A-roll interview',cat:'interview',done:false,note:''},{name:'B-roll cutaways',cat:'video',done:false,note:''},{name:'Profile stills',cat:'photo',done:false,note:''}];
+  }
+
+  var shoot={
+    id:Date.now(),
+    client:client,
+    address:addr,
+    date:document.getElementById('ns-date').value,
+    callTime:document.getElementById('ns-time').value,
+    type:type,
+    deliverables:delivs,
+    contact:document.getElementById('ns-contact').value.trim(),
+    brief:document.getElementById('ns-brief').value.trim(),
+    shots:shots,
+    notes:[],
+    status:'active',
+    startTime:new Date().toISOString(),
+    endTime:null
+  };
+
+  shoots.unshift(shoot);
+  DB.s('shoots',shoots);
+  closeOverlay('modal-new-shoot');
+  renderToday();
+}
+
+// ═══════════════════════════════════════════════
+// ADD SHOT
+// ═══════════════════════════════════════════════
+function addCustomShot(){
+  document.getElementById('as-name').value='';
+  document.getElementById('as-note').value='';
+  document.getElementById('modal-add-shot').classList.add('open');
+}
+
+function confirmAddShot(){
+  var name=document.getElementById('as-name').value.trim();
+  if(!name) return;
+  shoots[activeShoot].shots.push({name:name,cat:document.getElementById('as-cat').value,note:document.getElementById('as-note').value.trim(),done:false});
+  DB.s('shoots',shoots);
+  closeOverlay('modal-add-shot');
+  renderActiveSession();
+}
+
+// ═══════════════════════════════════════════════
+// JOBS PAGE
+// ═══════════════════════════════════════════════
+function renderJobs(){
+  var el=document.getElementById('all-jobs-list');
+  if(!shoots.length){ el.innerHTML='<div class="empty"><div class="empty-icon">📷</div><div class="empty-title">No shoots yet</div><div class="empty-sub">Start a new shoot to see it here.</div></div>'; return; }
+  el.innerHTML=shoots.map(function(s,i){
+    var done=s.shots.filter(function(sh){ return sh.done; }).length;
+    var total=s.shots.length;
+    var pct=total?Math.round((done/total)*100):0;
+    var statusBadge=s.status==='active'?'<span class="badge b-gold">Active</span>':'<span class="badge b-green">Done</span>';
+    return '<div class="shoot-card">'
+      +'<div class="shoot-card-header" onclick="toggleJobCard(this)">'
+      +'<div><div class="sc-client">'+s.client+'</div><div class="sc-addr">'+fmtDate(new Date(s.date))+(s.address?' · '+s.address:'')+'</div><div class="sc-meta">'+statusBadge+'<span class="badge b-blue">'+s.type+'</span></div></div>'
+      +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>'
+      +'</div>'
+      +'<div class="shoot-card-body">'
+      +(s.address?'<div style="font-size:13px;color:var(--text2);margin-bottom:8px">📍 '+s.address+'</div>':'')
+      +(s.contact?'<div style="font-size:13px;color:var(--text2);margin-bottom:8px">👤 '+s.contact+'</div>':'')
+      +(s.brief?'<div style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.5">'+s.brief+'</div>':'')
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:12px;color:var(--text3)">Shots</span><span style="font-size:12px;font-family:var(--mono);color:var(--gold)">'+done+'/'+total+'</span></div>'
+      +'<div style="background:var(--s3);border-radius:99px;height:4px"><div style="background:var(--gold);height:4px;border-radius:99px;width:'+pct+'%"></div></div>'
+      +(s.deliverables.length?'<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px">'+s.deliverables.map(function(d){ return '<span class="badge b-gold" style="font-size:10px">'+d+'</span>'; }).join('')+'</div>':'')
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">'
+      +(s.status==='active'?'<button class="btn btn-gold btn-sm" onclick="resumeShoot('+i+')">Resume</button>':'<button class="btn btn-ghost btn-sm" onclick="openJobDetail('+i+')">View report</button>')
+      +'<button class="btn btn-red btn-sm" onclick="deleteShoot('+i+')">Delete</button>'
+      +'</div>'
+      +'</div></div>';
+  }).join('');
+}
+
+function toggleJobCard(header){
+  header.nextElementSibling.classList.toggle('open');
+}
+
+function resumeShoot(i){
+  activeShoot=i;
+  sp('today', document.querySelector('.ni'));
+}
+
+function deleteShoot(i){
+  if(!confirm('Delete this shoot record?')) return;
+  if(activeShoot===i) activeShoot=null;
+  shoots.splice(i,1);
+  DB.s('shoots',shoots);
+  renderJobs();
+}
+
+// ═══════════════════════════════════════════════
+// REPORTS
+// ═══════════════════════════════════════════════
+function renderReports(){
+  var done=shoots.filter(function(s){ return s.status==='done'; });
+  var el=document.getElementById('report-area');
+  if(!done.length){ el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">No completed shoots</div><div class="empty-sub">Wrap a shoot to generate a report.</div></div>'; return; }
+  el.innerHTML='<div class="sect">Select a shoot</div>'+done.map(function(s,i){
+    var idx=shoots.indexOf(s);
+    var doneShots=s.shots.filter(function(sh){ return sh.done; }).length;
+    return '<div class="card-sm" style="margin-bottom:8px;cursor:pointer" onclick="showReport('+idx+')">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center">'
+      +'<div><div style="font-size:14px;font-weight:600;font-family:var(--font-head)">'+s.client+'</div><div style="font-size:12px;color:var(--text2);margin-top:2px">'+fmtDate(new Date(s.date))+'</div></div>'
+      +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>'
+      +'</div></div>';
+  }).join('');
+}
+
+function showReport(i){
+  openJobDetail(i);
+}
+
+function openJobDetail(i){
+  var s=shoots[i];
+  var doneShots=s.shots.filter(function(sh){ return sh.done; }).length;
+  var dur=s.endTime?fmtElapsed(new Date(s.endTime)-new Date(s.startTime)):'In progress';
+  var html='<div class="mtitle">'+s.client+'</div>'
+    +'<div style="font-size:12px;color:var(--text2);margin-bottom:14px">'+fmtDate(new Date(s.date))+(s.address?' · '+s.address:'')+'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'
+    +'<div class="card-sm" style="text-align:center"><div style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--gold)">'+doneShots+'/'+s.shots.length+'</div><div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Shots</div></div>'
+    +'<div class="card-sm" style="text-align:center"><div style="font-size:22px;font-weight:700;font-family:var(--mono);color:var(--gold)">'+dur+'</div><div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Duration</div></div>'
+    +'</div>'
+    +(s.deliverables.length?'<div class="sect" style="margin-top:0">Deliverables</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">'+s.deliverables.map(function(d){ return '<span class="badge b-gold">'+d+'</span>'; }).join('')+'</div>':'')
+    +'<div class="sect" style="margin-top:0">Shots captured</div>'
+    +s.shots.map(function(sh){
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)">'
+        +'<div style="width:18px;height:18px;border-radius:5px;background:'+(sh.done?'var(--green-dim)':'var(--s3)')+';border:1.5px solid '+(sh.done?'var(--green)':'var(--border2)')+';display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+        +(sh.done?'<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#3dba6f" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>':'')
+        +'</div>'
+        +'<div style="flex:1;font-size:13px;'+(sh.done?'':'color:var(--text3)')+'">'+sh.name+'</div>'
+        +'<span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:99px;background:'+catColor(sh.cat)+'22;color:'+catColor(sh.cat)+'">'+catLabel(sh.cat)+'</span>'
+        +'</div>';
+    }).join('')
+    +(s.notes.length?'<div class="sect">Notes</div>'+s.notes.map(function(n){ return '<div class="note-block"><div class="note-ts">'+fmtTime(new Date(n.ts))+'</div><div class="note-text">'+n.text+'</div></div>'; }).join(''):'')
+    +(s.brief?'<div class="sect">Brief</div><div style="font-size:13px;color:var(--text2);line-height:1.6">'+s.brief+'</div>':'');
+
+  document.getElementById('job-detail-content').innerHTML=html;
+  document.getElementById('modal-job-detail').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════
+function renderSettings(){
+  document.getElementById('set-shooter').value=settings.shooter||'';
+  document.getElementById('set-biz').value=settings.biz||'Mizzi Media';
+  document.getElementById('set-deliv').value=settings.deliv||'';
+  renderShotTemplates();
+}
+
+function saveSettings(){
+  settings.shooter=document.getElementById('set-shooter').value.trim();
+  settings.biz=document.getElementById('set-biz').value.trim();
+  settings.deliv=document.getElementById('set-deliv').value.trim();
+  DB.s('settings',settings);
+  alert('Saved');
+}
+
+function renderShotTemplates(){
+  var el=document.getElementById('shot-templates-list');
+  el.innerHTML=shotTemplates.map(function(t,i){
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border)">'
+      +'<span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;background:'+catColor(t.cat)+'22;color:'+catColor(t.cat)+'">'+catLabel(t.cat)+'</span>'
+      +'<span style="font-size:13px;flex:1">'+t.name+'</span>'
+      +'<div class="btn-icon" onclick="removeShotTemplate('+i+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>'
+      +'</div>';
+  }).join('');
+}
+
+function addShotTemplate(){
+  var name=prompt('Shot name:');
+  if(!name) return;
+  var cat=prompt('Category (drone/video/photo/interview/bts/other):','video');
+  shotTemplates.push({name:name.trim(),cat:cat||'other'});
+  DB.s('shot_templates',shotTemplates);
+  renderShotTemplates();
+}
+
+function removeShotTemplate(i){
+  shotTemplates.splice(i,1);
+  DB.s('shot_templates',shotTemplates);
+  renderShotTemplates();
+}
+
+function exportData(){
+  var data={shoots:shoots,settings:settings,shotTemplates:shotTemplates};
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download='mm-shootday-export.json';
+  a.click();
+}
+
+function clearData(){
+  if(confirm('Clear all shoot data?')){ localStorage.clear(); location.reload(); }
+}
+
+// ═══════════════════════════════════════════════
+// MODAL UTILS
+// ═══════════════════════════════════════════════
+function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(function(o){
+  o.addEventListener('click',function(e){ if(e.target===o) o.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+renderToday();
+</script>
+</body>
+</html>

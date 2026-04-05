@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)file:///Users/benmizzi/Downloads/MM_ClientPortal_5.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MM Portal">
+<meta name="theme-color" content="#0d0d0d">
+<title>Mizzi Media — Client Portal</title>
+<link href="./Mizzi Media — Client Portal_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d0d;
+  --s1: #161616;
+  --s2: #1f1f1f;
+  --s3: #2a2a2a;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f2f2f2;
+  --text2: #888;
+  --text3: #484848;
+  --gold: #c9a84c;
+  --gold-dim: rgba(201,168,76,0.1);
+  --green: #3dba6f;
+  --green-dim: rgba(61,186,111,0.1);
+  --red: #e05555;
+  --red-dim: rgba(224,85,85,0.1);
+  --blue: #5a9cf5;
+  --blue-dim: rgba(90,156,245,0.1);
+  --r: 12px;
+  --r-sm: 8px;
+  --font-head: 'Syne', sans-serif;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;min-height:100vh;overflow-x:hidden;padding-bottom:calc(72px + var(--safe-bot))}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(13,13,13,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:0.5px solid var(--border2);display:flex;padding:6px 0 calc(6px + var(--safe-bot));z-index:100}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer}
+.nl{font-size:10px;font-weight:500;color:var(--text3);letter-spacing:0.03em;transition:color 0.2s}
+.ni.active .nl{color:var(--gold)}
+.ni.active svg{stroke:var(--gold) !important}
+
+/* PAGES */
+.page{display:none;padding:calc(var(--safe-top) + 20px) 16px 16px}
+.page.active{display:block}
+
+/* BRAND */
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.brand-logo{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold)}
+.brand-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0.5}
+
+/* TYPOGRAPHY */
+.page-title{font-family:var(--font-head);font-size:28px;font-weight:700;letter-spacing:-0.5px;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text2)}
+.sect{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin:18px 0 8px}
+.sect:first-child{margin-top:0}
+
+/* CARDS */
+.card{background:var(--s1);border:0.5px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.card-sm{background:var(--s1);border:0.5px solid var(--border);border-radius:var(--r-sm);padding:12px 14px}
+
+/* INPUTS */
+input,select,textarea{width:100%;background:var(--s2);border:0.5px solid var(--border2);border-radius:var(--r-sm);padding:11px 13px;font-size:15px;font-family:var(--font);color:var(--text);outline:none;transition:border-color 0.15s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+select option{background:var(--s2)}
+.lbl{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:5px}
+.field{margin-bottom:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+
+/* BUTTONS */
+.btn{width:100%;padding:13px;border-radius:var(--r-sm);font-size:15px;font-weight:600;font-family:var(--font);cursor:pointer;border:none;transition:all 0.15s}
+.btn:active{transform:scale(0.98);opacity:0.88}
+.btn-gold{background:var(--gold);color:#0d0d0d}
+.btn-ghost{background:transparent;color:var(--text2);border:0.5px solid var(--border2)}
+.btn-red{background:var(--red-dim);color:var(--red);border:0.5px solid rgba(224,85,85,0.2)}
+.btn-blue{background:var(--blue-dim);color:var(--blue);border:0.5px solid rgba(90,156,245,0.2)}
+.btn-green{background:var(--green-dim);color:var(--green);border:0.5px solid rgba(61,186,111,0.2)}
+.btn-sm{padding:8px 14px;font-size:13px;width:auto;border-radius:7px}
+.btn-icon{width:30px;height:30px;border-radius:7px;background:var(--s2);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600}
+.b-gold{background:var(--gold-dim);color:var(--gold)}
+.b-green{background:var(--green-dim);color:var(--green)}
+.b-red{background:var(--red-dim);color:var(--red)}
+.b-blue{background:var(--blue-dim);color:var(--blue)}
+
+/* CLIENT CARD */
+.client-card{background:var(--s1);border:0.5px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.client-header{padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.client-avatar{width:42px;height:42px;border-radius:10px;background:var(--gold-dim);border:0.5px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--gold);flex-shrink:0;letter-spacing:0.05em}
+.client-name{font-family:var(--font-head);font-size:16px;font-weight:700;letter-spacing:-0.2px}
+.client-meta{font-size:12px;color:var(--text2);margin-top:2px}
+.client-body{display:none;border-top:0.5px solid var(--border)}
+.client-body.open{display:block}
+
+/* DELIVERY ITEM */
+.delivery-item{padding:14px 16px;border-bottom:0.5px solid var(--border);position:relative}
+.delivery-item:last-child{border-bottom:none}
+.delivery-date{font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:5px}
+.delivery-title{font-size:14px;font-weight:600;margin-bottom:6px}
+.delivery-links{display:flex;flex-direction:column;gap:6px}
+
+/* LINK ROW */
+.link-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s2);border-radius:var(--r-sm);border:0.5px solid var(--border2);cursor:pointer;transition:border-color 0.15s;text-decoration:none}
+.link-row:hover{border-color:var(--gold)}
+.link-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.link-icon.video{background:var(--blue-dim)}
+.link-icon.photo{background:var(--green-dim)}
+.link-icon.reel{background:var(--gold-dim)}
+.link-icon.folder{background:rgba(136,136,136,0.1)}
+.link-label{font-size:13px;font-weight:500;flex:1}
+.link-url{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+
+/* STATUS PILL */
+.status-new{background:var(--gold-dim);color:var(--gold)}
+.status-viewed{background:var(--green-dim);color:var(--green)}
+.status-revision{background:var(--red-dim);color:var(--red)}
+.status-approved{background:var(--blue-dim);color:var(--blue)}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.stat-box{background:var(--s2);border-radius:var(--r-sm);padding:11px 8px;text-align:center}
+.stat-num{font-size:20px;font-weight:700;font-family:var(--mono);color:var(--gold)}
+.stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+
+/* ACTIVITY */
+.activity-item{display:flex;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--border)}
+.activity-item:last-child{border-bottom:none}
+.activity-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.activity-time{font-size:11px;font-family:var(--mono);color:var(--text3)}
+.activity-text{font-size:13px;color:var(--text2);line-height:1.4}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--s1);border-radius:var(--r) var(--r) 0 0;padding:18px 18px calc(18px + var(--safe-bot));width:100%;max-width:430px;max-height:88vh;overflow-y:auto;animation:sup 0.22s ease}
+@keyframes sup{from{transform:translateY(22px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhandle{width:34px;height:4px;background:var(--border2);border-radius:99px;margin:0 auto 18px}
+.mtitle{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:16px;letter-spacing:-0.2px}
+
+/* COPY TOAST */
+.toast{position:fixed;bottom:calc(80px + var(--safe-bot) + 10px);left:50%;transform:translateX(-50%);background:var(--gold);color:#0d0d0d;padding:9px 18px;border-radius:99px;font-size:13px;font-weight:600;z-index:300;opacity:0;transition:opacity 0.2s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* EMPTY */
+.empty{text-align:center;padding:44px 16px;color:var(--text3)}
+.empty-icon{font-size:32px;margin-bottom:10px}
+.empty-title{font-size:15px;font-weight:600;color:var(--text2);margin-bottom:4px}
+.empty-sub{font-size:13px;line-height:1.5}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap input{padding-left:36px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none}
+
+/* RETAINER BADGE */
+.retainer-bar{background:var(--gold-dim);border:0.5px solid rgba(201,168,76,0.15);border-radius:var(--r-sm);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+
+::-webkit-scrollbar{width:0}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<!-- ═══════════════ PAGE: CLIENTS ═══════════════ -->
+<div id="page-clients" class="page active">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span><div class="brand-dot"></div><span style="font-size:11px;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase">Client Portal</span></div>
+  <div class="page-title" style="margin-bottom:4px">Clients</div>
+  <div class="page-sub" style="margin-bottom:16px">Content delivery hub</div>
+
+  <div class="search-wrap">
+    <div class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+    <input type="text" id="client-search" placeholder="Search clients..." oninput="filterClients()">
+  </div>
+
+  <button class="btn btn-gold" onclick="openNewClient()" style="margin-bottom:16px">+ New client</button>
+  <div id="clients-list"><div class="sect">Retainer clients</div><div class="client-card"><div class="client-header" onclick="openClientDetail(0)"><div class="client-avatar">I</div><div style="flex:1;min-width:0"><div class="client-name">Infinity</div><div class="client-meta">0 deliveries · $4,500/mo</div></div><span class="badge b-gold">Retainer</span></div></div><div class="client-card"><div class="client-header" onclick="openClientDetail(1)"><div class="client-avatar">O</div><div style="flex:1;min-width:0"><div class="client-name">OBS</div><div class="client-meta">Craig / Grant · 0 deliveries · $2,500/mo</div></div><span class="badge b-gold">Retainer</span></div></div><div class="client-card"><div class="client-header" onclick="openClientDetail(2)"><div class="client-avatar">PP</div><div style="flex:1;min-width:0"><div class="client-name">Paterson Property Group</div><div class="client-meta">0 deliveries · $3,000/mo</div></div><span class="badge b-gold">Retainer</span></div></div><div class="client-card"><div class="client-header" onclick="openClientDetail(3)"><div class="client-avatar">I</div><div style="flex:1;min-width:0"><div class="client-name">Invicta</div><div class="client-meta">0 deliveries · $3,200/mo</div></div><span class="badge b-gold">Retainer</span></div></div></div>
+</div>
+
+<!-- ═══════════════ PAGE: DELIVER ═══════════════ -->
+<div id="page-deliver" class="page">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span></div>
+  <div class="page-title" style="margin-bottom:4px">Deliver</div>
+  <div class="page-sub" style="margin-bottom:16px">Send content to a client</div>
+
+  <div class="card">
+    <div class="lbl" style="margin-bottom:8px">Select client</div>
+    <select id="del-client-select" style="margin-bottom:12px" onchange="onDeliverClientChange()">
+      <option value="">Choose client...</option>
+    </select>
+    <div class="lbl" style="margin-bottom:5px">Delivery title</div>
+    <input type="text" id="del-title" placeholder="e.g. April site update — edited" style="margin-bottom:10px">
+    <div class="lbl" style="margin-bottom:8px">Shoot date</div>
+    <input type="date" id="del-date" style="margin-bottom:12px">
+    <div class="lbl" style="margin-bottom:8px">Content links</div>
+    <div id="del-links-list"></div>
+    <button class="btn btn-ghost" onclick="addDelLink()" style="margin-bottom:12px">+ Add link</button>
+    <div class="lbl" style="margin-bottom:5px">Message to client (optional)</div>
+    <textarea id="del-message" rows="2" placeholder="Any notes for the client..." style="margin-bottom:12px"></textarea>
+    <button class="btn btn-gold" onclick="sendDelivery()">Send delivery</button>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE: DASHBOARD ═══════════════ -->
+<div id="page-dashboard" class="page">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span></div>
+  <div class="page-title" style="margin-bottom:4px">Dashboard</div>
+  <div class="page-sub" style="margin-bottom:16px">Overview</div>
+  <div id="dashboard-content"></div>
+</div>
+
+<!-- ═══════════════ PAGE: SETTINGS ═══════════════ -->
+<div id="page-settings" class="page">
+  <div class="brand"><span class="brand-logo">Mizzi Media</span></div>
+  <div class="page-title" style="margin-bottom:16px">Settings</div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px">Business details</div>
+    <div class="field"><div class="lbl">Business name</div><input type="text" id="set-biz" placeholder="Mizzi Media" value="Mizzi Media"></div>
+    <div class="field"><div class="lbl">Your name</div><input type="text" id="set-name" placeholder="Ben Mizzi"></div>
+    <div class="field"><div class="lbl">Email</div><input type="email" id="set-email" placeholder="ben@mizzimedia.com.au"></div>
+    <div class="field"><div class="lbl">Phone</div><input type="tel" id="set-phone" placeholder="0400 000 000"></div>
+    <div class="field"><div class="lbl">Default delivery message</div><textarea id="set-msg" rows="3" placeholder="Hey [client], your content from today&#39;s shoot is ready. Let me know if you need any revisions."></textarea></div>
+    <button class="btn btn-gold" onclick="saveSettings()">Save</button>
+  </div>
+  <div class="card" style="margin-top:4px">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Data</div>
+    <button class="btn btn-ghost" onclick="exportData()" style="margin-bottom:8px">Export all data (JSON)</button>
+    <button class="btn btn-red" onclick="clearData()">Clear all data</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="nav">
+  <div class="ni active" onclick="sp(&#39;clients&#39;,this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+    <div class="nl">Clients</div>
+  </div>
+  <div class="ni" onclick="sp(&#39;deliver&#39;,this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    <div class="nl">Deliver</div>
+  </div>
+  <div class="ni" onclick="sp(&#39;dashboard&#39;,this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+    <div class="nl">Dashboard</div>
+  </div>
+  <div class="ni" onclick="sp(&#39;settings&#39;,this)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"></path></svg>
+    <div class="nl">Settings</div>
+  </div>
+</div>
+
+<!-- MODAL: NEW CLIENT -->
+<div class="overlay" id="modal-new-client">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="nc-modal-title">New client</div>
+    <div class="field"><div class="lbl">Company / client name</div><input type="text" id="nc-name" placeholder="e.g. Paterson Property Group"></div>
+    <div class="field"><div class="lbl">Contact name</div><input type="text" id="nc-contact" placeholder="e.g. Sarah Paterson"></div>
+    <div class="field"><div class="lbl">Email</div><input type="email" id="nc-email" placeholder="sarah@paterson.com.au"></div>
+    <div class="field"><div class="lbl">Phone</div><input type="tel" id="nc-phone" placeholder="0400 000 000"></div>
+    <div class="field"><div class="lbl">Type</div>
+      <select id="nc-type">
+        <option value="retainer">Retainer</option>
+        <option value="adhoc">Ad-hoc</option>
+        <option value="oneoff">One-off</option>
+      </select>
+    </div>
+    <div class="field" id="nc-retainer-field"><div class="lbl">Monthly retainer value ($)</div><input type="number" id="nc-retainer" placeholder="4500"></div>
+    <div class="field"><div class="lbl">Notes</div><textarea id="nc-notes" rows="2" placeholder="Key info, preferences, contacts..."></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+      <button class="btn btn-ghost" onclick="closeOverlay(&#39;modal-new-client&#39;)">Cancel</button>
+      <button class="btn btn-gold" id="nc-save-btn" onclick="saveClient()">Save client</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CLIENT DETAIL -->
+<div class="overlay" id="modal-client-detail">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div id="client-detail-content"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
+      <button class="btn btn-ghost" onclick="closeOverlay(&#39;modal-client-detail&#39;)">Close</button>
+      <button class="btn btn-gold" id="client-detail-deliver-btn">Deliver content</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DELIVERY DETAIL -->
+<div class="overlay" id="modal-delivery-detail">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div id="delivery-detail-content"></div>
+    <button class="btn btn-ghost" onclick="closeOverlay(&#39;modal-delivery-detail&#39;)" style="margin-top:14px">Close</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+var DB = {
+  g: function(k){ try{ return JSON.parse(localStorage.getItem('mm_cp_'+k)||'null'); }catch(e){ return null; } },
+  s: function(k,v){ localStorage.setItem('mm_cp_'+k, JSON.stringify(v)); }
+};
+
+var clients  = DB.g('clients')  || [];
+var settings = DB.g('settings') || { biz:'Mizzi Media', name:'Ben Mizzi', email:'', phone:'', msg:'Hey [client], your content is ready. Let me know if you need any revisions.' };
+var editClientIdx = null;
+
+// Seed with current retainer clients if empty
+if(!clients.length){
+  clients=[
+    {id:1,name:'Infinity',contact:'',email:'',phone:'',type:'retainer',retainer:4500,notes:'Monthly construction retainer',deliveries:[],createdAt:new Date().toISOString()},
+    {id:2,name:'OBS',contact:'Craig / Grant',email:'',phone:'',type:'retainer',retainer:2500,notes:'Oil Baron contacts: Craig and Grant',deliveries:[],createdAt:new Date().toISOString()},
+    {id:3,name:'Paterson Property Group',contact:'',email:'',phone:'',type:'retainer',retainer:3000,notes:'Monthly retainer',deliveries:[],createdAt:new Date().toISOString()},
+    {id:4,name:'Invicta',contact:'',email:'',phone:'',type:'retainer',retainer:3200,notes:'Newer retainer client',deliveries:[],createdAt:new Date().toISOString()},
+  ];
+  DB.s('clients',clients);
+}
+
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function fmtDate(d){ var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]; }
+function fmtMoney(n){ return '$'+(n||0).toLocaleString(); }
+function initials(name){ return name.split(' ').map(function(w){ return w[0]; }).join('').substring(0,2).toUpperCase(); }
+function linkType(url){
+  if(!url) return 'folder';
+  var u=url.toLowerCase();
+  if(u.includes('dropbox')) return 'folder';
+  if(u.includes('vimeo')||u.includes('youtube')||u.includes('youtu.be')) return 'video';
+  if(u.includes('.mp4')||u.includes('video')) return 'video';
+  if(u.includes('.jpg')||u.includes('.png')||u.includes('photo')||u.includes('image')) return 'photo';
+  if(u.includes('reel')) return 'reel';
+  return 'folder';
+}
+function linkTypeLabel(url){ return {folder:'Folder',video:'Video',photo:'Photos',reel:'Reel'}[linkType(url)]||'Link'; }
+function linkTypeIcon(url){
+  var t=linkType(url);
+  var icons={
+    video:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5a9cf5" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>',
+    photo:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3dba6f" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+    reel:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+    folder:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'
+  };
+  return icons[t]||icons.folder;
+}
+
+// ═══════════════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════════════
+function sp(id, el){
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.ni').forEach(function(n){ n.classList.remove('active'); });
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  if(id==='clients') renderClients();
+  if(id==='deliver') renderDeliver();
+  if(id==='dashboard') renderDashboard();
+  if(id==='settings') renderSettings();
+}
+
+// ═══════════════════════════════════════════════
+// CLIENTS PAGE
+// ═══════════════════════════════════════════════
+var clientFilter='';
+function filterClients(){ clientFilter=document.getElementById('client-search').value.toLowerCase(); renderClients(); }
+
+function renderClients(){
+  var el=document.getElementById('clients-list');
+  var filtered=clients.filter(function(c){ return !clientFilter||c.name.toLowerCase().includes(clientFilter)||(c.contact&&c.contact.toLowerCase().includes(clientFilter)); });
+  if(!filtered.length){ el.innerHTML='<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">No clients yet</div><div class="empty-sub">Add your first client to get started.</div></div>'; return; }
+
+  // Group: retainers first
+  var retainers=filtered.filter(function(c){ return c.type==='retainer'; });
+  var others=filtered.filter(function(c){ return c.type!=='retainer'; });
+
+  var html='';
+  if(retainers.length){
+    html+='<div class="sect">Retainer clients</div>';
+    html+=retainers.map(function(c){ return renderClientCard(c); }).join('');
+  }
+  if(others.length){
+    html+='<div class="sect">Ad-hoc / one-off</div>';
+    html+=others.map(function(c){ return renderClientCard(c); }).join('');
+  }
+  el.innerHTML=html;
+}
+
+function renderClientCard(c){
+  var idx=clients.indexOf(c);
+  var lastDelivery=c.deliveries&&c.deliveries.length?c.deliveries[c.deliveries.length-1]:null;
+  var delivCount=c.deliveries?c.deliveries.length:0;
+  return '<div class="client-card">'
+    +'<div class="client-header" onclick="openClientDetail('+idx+')">'
+    +'<div class="client-avatar">'+initials(c.name)+'</div>'
+    +'<div style="flex:1;min-width:0">'
+    +'<div class="client-name">'+c.name+'</div>'
+    +'<div class="client-meta">'+(c.contact?c.contact+' · ':'')+delivCount+' deliveries'+(c.type==='retainer'?' · '+fmtMoney(c.retainer)+'/mo':'')+'</div>'
+    +'</div>'
+    +(c.type==='retainer'?'<span class="badge b-gold">Retainer</span>':'<span class="badge b-blue">Ad-hoc</span>')
+    +'</div></div>';
+}
+
+function openClientDetail(idx){
+  var c=clients[idx];
+  var html='<div class="mtitle">'+c.name+'</div>';
+  if(c.type==='retainer'){
+    html+='<div class="retainer-bar"><div style="font-size:13px;font-weight:600;color:var(--gold)">Retainer</div><div style="font-size:16px;font-weight:700;font-family:var(--mono);color:var(--gold)">'+fmtMoney(c.retainer)+'/mo</div></div>';
+  }
+  var delivCount=c.deliveries?c.deliveries.length:0;
+  html+='<div class="stats-row">'
+    +'<div class="stat-box"><div class="stat-num">'+delivCount+'</div><div class="stat-lbl">Deliveries</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+(c.deliveries?c.deliveries.reduce(function(a,d){ return a+(d.links?d.links.length:0); },0):0)+'</div><div class="stat-lbl">Files sent</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+(c.retainer?fmtMoney(c.retainer*12).replace('$',''):'--')+'</div><div class="stat-lbl">Per yr $</div></div>'
+    +'</div>';
+  if(c.contact||c.email||c.phone){
+    html+='<div class="sect" style="margin-top:0">Contact</div>';
+    if(c.contact) html+='<div style="font-size:13px;color:var(--text2);margin-bottom:4px">👤 '+c.contact+'</div>';
+    if(c.email) html+='<div style="font-size:13px;color:var(--blue);margin-bottom:4px">✉ '+c.email+'</div>';
+    if(c.phone) html+='<div style="font-size:13px;color:var(--text2);margin-bottom:8px">📞 '+c.phone+'</div>';
+  }
+  if(c.notes) html+='<div style="font-size:13px;color:var(--text2);background:var(--s2);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:12px;line-height:1.5">'+c.notes+'</div>';
+
+  if(c.deliveries&&c.deliveries.length){
+    html+='<div class="sect">Delivery history</div>';
+    var sorted=c.deliveries.slice().reverse();
+    html+=sorted.map(function(d,di){
+      var realIdx=c.deliveries.length-1-di;
+      return '<div style="padding:10px 0;border-bottom:0.5px solid var(--border);cursor:pointer" onclick="openDeliveryDetail('+idx+','+realIdx+')">'
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+        +'<div><div style="font-size:14px;font-weight:600">'+d.title+'</div><div style="font-size:11px;font-family:var(--mono);color:var(--text3);margin-top:2px">'+fmtDate(new Date(d.date))+'</div></div>'
+        +'<span class="badge b-green">'+(d.links?d.links.length:0)+' files</span>'
+        +'</div></div>';
+    }).join('');
+  }
+
+  html+='<div style="display:flex;gap:8px;margin-top:14px">'
+    +'<button class="btn btn-ghost" style="flex:1" onclick="editClient('+idx+')">Edit</button>'
+    +'<button class="btn btn-red btn-sm" style="width:auto;padding:8px 14px" onclick="deleteClient('+idx+')">Delete</button>'
+    +'</div>';
+
+  document.getElementById('client-detail-content').innerHTML=html;
+  document.getElementById('client-detail-deliver-btn').onclick=function(){ closeOverlay('modal-client-detail'); goDeliverFor(idx); };
+  document.getElementById('modal-client-detail').classList.add('open');
+}
+
+function openDeliveryDetail(clientIdx, delivIdx){
+  var c=clients[clientIdx];
+  var d=c.deliveries[delivIdx];
+  var html='<div class="mtitle">'+d.title+'</div>'
+    +'<div style="font-size:12px;font-family:var(--mono);color:var(--text3);margin-bottom:14px">'+fmtDate(new Date(d.date))+'</div>';
+  if(d.message) html+='<div style="font-size:13px;color:var(--text2);background:var(--s2);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:14px;line-height:1.5">'+d.message+'</div>';
+  html+='<div class="sect" style="margin-top:0">Content links</div>';
+  html+=d.links.map(function(lnk){
+    return '<a href="'+lnk.url+'" target="_blank" class="link-row" style="margin-bottom:7px;text-decoration:none">'
+      +'<div class="link-icon '+linkType(lnk.url)+'">'+linkTypeIcon(lnk.url)+'</div>'
+      +'<div style="flex:1;min-width:0"><div class="link-label">'+lnk.label+'</div><div class="link-url">'+lnk.url+'</div></div>'
+      +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#484848" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+      +'</a>';
+  }).join('');
+  // Copy all links button
+  html+='<button class="btn btn-ghost" onclick="copyAllLinks('+clientIdx+','+delivIdx+')" style="margin-top:6px">Copy all links</button>';
+  document.getElementById('delivery-detail-content').innerHTML=html;
+  document.getElementById('modal-delivery-detail').classList.add('open');
+}
+
+function copyAllLinks(ci, di){
+  var d=clients[ci].deliveries[di];
+  var text=d.title+'\n\n'+d.links.map(function(l){ return l.label+': '+l.url; }).join('\n');
+  navigator.clipboard.writeText(text).then(function(){ showToast('Copied to clipboard'); });
+}
+
+// ═══════════════════════════════════════════════
+// NEW / EDIT CLIENT
+// ═══════════════════════════════════════════════
+function openNewClient(){
+  editClientIdx=null;
+  document.getElementById('nc-modal-title').textContent='New client';
+  document.getElementById('nc-save-btn').textContent='Save client';
+  ['nc-name','nc-contact','nc-email','nc-phone','nc-notes'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('nc-type').value='retainer';
+  document.getElementById('nc-retainer').value='';
+  document.getElementById('nc-retainer-field').style.display='block';
+  document.getElementById('modal-new-client').classList.add('open');
+}
+
+function editClient(idx){
+  editClientIdx=idx;
+  var c=clients[idx];
+  document.getElementById('nc-modal-title').textContent='Edit client';
+  document.getElementById('nc-save-btn').textContent='Save changes';
+  document.getElementById('nc-name').value=c.name||'';
+  document.getElementById('nc-contact').value=c.contact||'';
+  document.getElementById('nc-email').value=c.email||'';
+  document.getElementById('nc-phone').value=c.phone||'';
+  document.getElementById('nc-type').value=c.type||'retainer';
+  document.getElementById('nc-retainer').value=c.retainer||'';
+  document.getElementById('nc-notes').value=c.notes||'';
+  document.getElementById('nc-retainer-field').style.display=c.type==='retainer'?'block':'none';
+  closeOverlay('modal-client-detail');
+  document.getElementById('modal-new-client').classList.add('open');
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('nc-type').addEventListener('change',function(){
+    document.getElementById('nc-retainer-field').style.display=this.value==='retainer'?'block':'none';
+  });
+});
+
+function saveClient(){
+  var name=document.getElementById('nc-name').value.trim();
+  if(!name){ alert('Client name required'); return; }
+  var c={
+    id:editClientIdx!==null?clients[editClientIdx].id:Date.now(),
+    name:name,
+    contact:document.getElementById('nc-contact').value.trim(),
+    email:document.getElementById('nc-email').value.trim(),
+    phone:document.getElementById('nc-phone').value.trim(),
+    type:document.getElementById('nc-type').value,
+    retainer:parseFloat(document.getElementById('nc-retainer').value)||0,
+    notes:document.getElementById('nc-notes').value.trim(),
+    deliveries:editClientIdx!==null?(clients[editClientIdx].deliveries||[]):[],
+    createdAt:editClientIdx!==null?clients[editClientIdx].createdAt:new Date().toISOString()
+  };
+  if(editClientIdx!==null){ clients[editClientIdx]=c; }
+  else { clients.push(c); }
+  DB.s('clients',clients);
+  closeOverlay('modal-new-client');
+  renderClients();
+}
+
+function deleteClient(idx){
+  if(!confirm('Delete '+clients[idx].name+'? All delivery history will be lost.')) return;
+  clients.splice(idx,1);
+  DB.s('clients',clients);
+  closeOverlay('modal-client-detail');
+  renderClients();
+}
+
+// ═══════════════════════════════════════════════
+// DELIVER PAGE
+// ═══════════════════════════════════════════════
+var delLinks=[];
+
+function renderDeliver(){
+  var sel=document.getElementById('del-client-select');
+  sel.innerHTML='<option value="">Choose client...</option>'+clients.map(function(c,i){ return '<option value="'+i+'">'+c.name+'</option>'; }).join('');
+  // Set today's date
+  var today=new Date();
+  document.getElementById('del-date').value=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  delLinks=[{label:'',url:'',type:'folder'}];
+  renderDelLinks();
+  document.getElementById('del-title').value='';
+  document.getElementById('del-message').value=settings.msg||'';
+}
+
+function goDeliverFor(idx){
+  sp('deliver', document.querySelectorAll('.ni')[1]);
+  setTimeout(function(){ document.getElementById('del-client-select').value=idx; onDeliverClientChange(); },100);
+}
+
+function onDeliverClientChange(){
+  var idx=document.getElementById('del-client-select').value;
+  if(idx==='') return;
+  var c=clients[parseInt(idx)];
+  var msg=(settings.msg||'').replace('[client]',c.contact||c.name);
+  document.getElementById('del-message').value=msg;
+}
+
+function renderDelLinks(){
+  var el=document.getElementById('del-links-list');
+  el.innerHTML=delLinks.map(function(lnk,i){
+    return '<div style="background:var(--s2);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:8px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">'
+      +'<div class="lbl" style="margin:0">Link '+(i+1)+'</div>'
+      +(delLinks.length>1?'<div class="btn-icon" onclick="removeDelLink('+i+')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>':'')
+      +'</div>'
+      +'<input type="text" placeholder="Label (e.g. Edited video, Stills)" value="'+lnk.label+'" oninput="delLinks['+i+'].label=this.value" style="margin-bottom:6px">'
+      +'<input type="url" placeholder="Dropbox / Vimeo / YouTube link" value="'+lnk.url+'" oninput="delLinks['+i+'].url=this.value">'
+      +'</div>';
+  }).join('');
+}
+
+function addDelLink(){ delLinks.push({label:'',url:'',type:'folder'}); renderDelLinks(); }
+function removeDelLink(i){ delLinks.splice(i,1); renderDelLinks(); }
+
+function sendDelivery(){
+  var cidx=document.getElementById('del-client-select').value;
+  var title=document.getElementById('del-title').value.trim();
+  var date=document.getElementById('del-date').value;
+  if(cidx===''){ alert('Please select a client'); return; }
+  if(!title){ alert('Please enter a delivery title'); return; }
+  var validLinks=delLinks.filter(function(l){ return l.url.trim(); });
+  if(!validLinks.length){ alert('Please add at least one link'); return; }
+  var delivery={
+    id:Date.now(),
+    title:title,
+    date:date?new Date(date).toISOString():new Date().toISOString(),
+    links:validLinks,
+    message:document.getElementById('del-message').value.trim(),
+    sentAt:new Date().toISOString()
+  };
+  if(!clients[cidx].deliveries) clients[cidx].deliveries=[];
+  clients[cidx].deliveries.push(delivery);
+  DB.s('clients',clients);
+  showToast('Delivery saved for '+clients[cidx].name);
+  sp('clients', document.querySelector('.ni'));
+}
+
+// ═══════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════
+function renderDashboard(){
+  var el=document.getElementById('dashboard-content');
+  var totalRetainer=clients.filter(function(c){ return c.type==='retainer'; }).reduce(function(a,c){ return a+(c.retainer||0); },0);
+  var totalDeliveries=clients.reduce(function(a,c){ return a+(c.deliveries?c.deliveries.length:0); },0);
+  var totalFiles=clients.reduce(function(a,c){ return a+(c.deliveries?c.deliveries.reduce(function(b,d){ return b+(d.links?d.links.length:0); },0):0); },0);
+
+  var html='<div class="stats-row">'
+    +'<div class="stat-box"><div class="stat-num">'+fmtMoney(totalRetainer).replace('$','')+'</div><div class="stat-lbl">Retainer/mo</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+clients.length+'</div><div class="stat-lbl">Clients</div></div>'
+    +'<div class="stat-box"><div class="stat-num">'+totalDeliveries+'</div><div class="stat-lbl">Deliveries</div></div>'
+    +'</div>';
+
+  // Retainer breakdown
+  var retainers=clients.filter(function(c){ return c.type==='retainer'; });
+  if(retainers.length){
+    html+='<div class="sect">Retainer clients</div>';
+    html+=retainers.map(function(c){
+      var pct=totalRetainer?Math.round((c.retainer/totalRetainer)*100):0;
+      return '<div class="card-sm" style="margin-bottom:8px">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+        +'<div style="font-size:14px;font-weight:600;font-family:var(--font-head)">'+c.name+'</div>'
+        +'<div style="font-size:15px;font-weight:700;font-family:var(--mono);color:var(--gold)">'+fmtMoney(c.retainer)+'/mo</div>'
+        +'</div>'
+        +'<div style="background:var(--s3);border-radius:99px;height:4px"><div style="background:var(--gold);height:4px;border-radius:99px;width:'+pct+'%"></div></div>'
+        +'<div style="font-size:11px;color:var(--text3);margin-top:4px">'+pct+'% of total retainer</div>'
+        +'</div>';
+    }).join('');
+  }
+
+  // Recent deliveries
+  var recentDeliveries=[];
+  clients.forEach(function(c){
+    if(c.deliveries) c.deliveries.forEach(function(d){
+      recentDeliveries.push({client:c.name,delivery:d});
+    });
+  });
+  recentDeliveries.sort(function(a,b){ return new Date(b.delivery.sentAt)-new Date(a.delivery.sentAt); });
+  if(recentDeliveries.length){
+    html+='<div class="sect">Recent deliveries</div><div class="card" style="padding:10px 14px">';
+    html+=recentDeliveries.slice(0,6).map(function(rd){
+      return '<div class="activity-item">'
+        +'<div class="activity-dot" style="background:var(--green)"></div>'
+        +'<div><div class="activity-time">'+fmtDate(new Date(rd.delivery.sentAt))+'</div><div class="activity-text">'+rd.client+' — '+rd.delivery.title+'</div></div>'
+        +'</div>';
+    }).join('');
+    html+='</div>';
+  }
+
+  el.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════
+function renderSettings(){
+  document.getElementById('set-biz').value=settings.biz||'Mizzi Media';
+  document.getElementById('set-name').value=settings.name||'';
+  document.getElementById('set-email').value=settings.email||'';
+  document.getElementById('set-phone').value=settings.phone||'';
+  document.getElementById('set-msg').value=settings.msg||'';
+}
+
+function saveSettings(){
+  settings.biz=document.getElementById('set-biz').value.trim();
+  settings.name=document.getElementById('set-name').value.trim();
+  settings.email=document.getElementById('set-email').value.trim();
+  settings.phone=document.getElementById('set-phone').value.trim();
+  settings.msg=document.getElementById('set-msg').value.trim();
+  DB.s('settings',settings);
+  alert('Saved');
+}
+
+function exportData(){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify({clients:clients,settings:settings},null,2)],{type:'application/json'}));
+  a.download='mm-portal-export.json';
+  a.click();
+}
+
+function clearData(){
+  if(confirm('Clear all portal data?')){ localStorage.clear(); location.reload(); }
+}
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); },2200);
+}
+
+function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(function(o){
+  o.addEventListener('click',function(e){ if(e.target===o) o.classList.remove('open'); });
+});
+
+// Fix badge count display
+function fixBadge(n){ return n; }
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('nc-type').addEventListener('change',function(){
+    document.getElementById('nc-retainer-field').style.display=this.value==='retainer'?'block':'none';
+  });
+});
+renderClients();
+</script>
+
+
+</body></html>
